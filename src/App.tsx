@@ -9,7 +9,7 @@ import routerBindings, {
     NavigateToResource,
     UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-import dataProvider from "@refinedev/simple-rest";
+import { dataProvider } from "rest-data-provider/index";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { AntdInferencer } from "@refinedev/inferencer/antd";
 
