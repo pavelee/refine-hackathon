@@ -4,6 +4,7 @@ import {
     notificationProvider,
     ErrorComponent,
     RefineThemes,
+    AuthPage
 } from "@refinedev/antd";
 import routerBindings, {
     NavigateToResource,
@@ -16,11 +17,19 @@ import { AntdInferencer } from "@refinedev/inferencer/antd";
 import { ConfigProvider } from "antd";
 import "@refinedev/antd/dist/reset.css";
 
+import { BlogPostList } from "pages/blog-posts/list";
+import { BlogPostEdit } from "pages/blog-posts/edit";
+import { BlogPostShow } from "pages/blog-posts/show";
+import { BlogPostCreate } from "pages/blog-posts/create";
+
+import authProvider from "./authProvider";
+
 const App: React.FC = () => {
     return (
         <BrowserRouter>
             <ConfigProvider theme={RefineThemes.Blue}>
                 <Refine
+                    authProvider={authProvider}
                     routerProvider={routerBindings}
                     dataProvider={dataProvider(
                         "https://api.fake-rest.refine.dev",
@@ -33,6 +42,9 @@ const App: React.FC = () => {
                             show: "/blog-posts/show/:id",
                             create: "/blog-posts/create",
                             edit: "/blog-posts/edit/:id",
+                            meta: {
+                                canDelete: true
+                            }
                         },
                     ]}
                     options={{
@@ -50,20 +62,36 @@ const App: React.FC = () => {
                         >
                             <Route index element={<NavigateToResource resource="blog_posts" />} />
                             <Route path="blog-posts">
-                                <Route index element={<AntdInferencer />} />
+                                <Route index element={<BlogPostList />} />
                                 <Route
                                     path="show/:id"
-                                    element={<AntdInferencer />}
+                                    element={<BlogPostShow />}
                                 />
                                 <Route
                                     path="edit/:id"
-                                    element={<AntdInferencer />}
+                                    element={<BlogPostEdit />}
                                 />
                                 <Route
                                     path="create"
-                                    element={<AntdInferencer />}
+                                    element={<BlogPostCreate />}
                                 />
                             </Route>
+                            <Route
+                                path="/login"
+                                element={<AuthPage type="login" />}
+                            />
+                            <Route
+                                path="/register"
+                                element={<AuthPage type="register" />}
+                            />
+                            <Route
+                                path="/forgot-password"
+                                element={<AuthPage type="forgotPassword" />}
+                            />
+                            <Route
+                                path="/update-password"
+                                element={<AuthPage type="updatePassword" />}
+                            />
                             <Route path="*" element={<ErrorComponent />} />
                         </Route>
                     </Routes>
